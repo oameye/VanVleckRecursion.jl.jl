@@ -166,7 +166,7 @@ class Term(object): #where the "subroutine" is defined
         sall += s+"}{"
         if q!=1: sall += str(q)
         sall += str(denom).replace("**","^").replace("*","")\
-            +"(i\omega)^%d}"%len(freqs)
+            +"(i\\omega)^%d}"%len(freqs)
         if self.rotating == 1:
             sall+="e^{im_1\\omega t}"
         return sall
@@ -427,13 +427,5 @@ def K(n,k = -1):
 def S(n):
     return Generator.get(n)
 
-
-
-Kamiltonian.set_H(Terms([Term(0),Term(1)]))
-# print(K(1,2))
-# k = K(5,3).terms[-1]
-# k = K(3).terms[2]
-k = S(3).terms[1]
-k = S(2)
-print(k)
-print(S(2).latex())
+Kamiltonian.set_H(Terms([Term(0), Term(1), Term(2)]))
+print(K(1).latex())
