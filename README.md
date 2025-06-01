@@ -8,7 +8,7 @@
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 [![jet](https://img.shields.io/badge/%F0%9F%9B%A9%EF%B8%8F_tested_with-JET.jl-233f9a)](https://github.com/aviatesk/JET.jl)
 
-A Julia package for computing Van Vleck canonical transformations recursion formula of rapidly driven systems.
+A Julia package for computing the Van Vleck canonical transformations recursion formula of rapidly driven systems.
 
 ## What does this package do?
 
