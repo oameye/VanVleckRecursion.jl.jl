@@ -64,4 +64,4 @@ Physical Review Letters **129**, 100601 (2022)
 }
 ```
 
-Based on the original Python implementation by xiaoxu (2021), translated to Julia.
+Based on [the original Python implementation by xiaoxu (2021)](https://github.com/xiaoxuisaac/vanVleck-recursion), translated to Julia.
