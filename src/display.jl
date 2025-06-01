@@ -131,6 +131,9 @@ function _latex(term::Term, freq_id::Int=1, freq=nothing, freqs::Vector=[])
     return "\\{\\!\\!\\{$s1,$s2\\}\\!\\!\\}", freq_id, new_freqs
 end
 
+# Handle Nothing cases for _latex function
+_latex(::Nothing, freq_id::Int, freq, freqs::Vector) = ("", freq_id, freqs)
+
 """
     latex(term::Term; advanced::Bool=true)
 
@@ -157,7 +160,7 @@ function latex(term::Term; advanced::Bool=true)
         if term.rotating == 1
             s *= "e^{i\\omega t}"
         end
-        return s
+        return latexstring(s)
     end
 
     # Advanced LaTeX implementation with sophisticated formatting
@@ -235,7 +238,7 @@ Generate LaTeX representation of a collection of terms with proper alignment.
 `String`: LaTeX string representation with line breaks and alignment
 """
 function latex(terms::Terms; advanced::Bool=true)
-    s = ""
+    s = L""
     count = 0
     for term in terms.terms
         count += 1
@@ -244,7 +247,7 @@ function latex(terms::Terms; advanced::Bool=true)
             s *= "\\\\ \n"
         end
     end
-    return s
+    return latexstring(s)
 end
 
 """

@@ -33,7 +33,7 @@ Translated from Python code by xiaoxu (2021) into idiomatic Julia.
 """
 module VanVleckRecursion
 
-using Printf
+using Printf, LaTeXStrings
 
 # Export main types
 export AbstractTerm, AbstractTerms, Term, Terms, SymbolicNum

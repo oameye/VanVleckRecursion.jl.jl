@@ -111,3 +111,8 @@ function combine_if_same(term1::Term, term2::Term)
     combined.factor += same * term2.factor
     return combined, true
 end
+
+# Handle Nothing cases
+is_same(::Nothing, ::Nothing) = 1
+is_same(::Term, ::Nothing) = 0
+is_same(::Nothing, ::Term) = 0
