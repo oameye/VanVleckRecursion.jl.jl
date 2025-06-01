@@ -8,6 +8,12 @@ export bracket, dot, rot, integrate, simplify!
 export get_kamiltonian, get_generator, set_H!, K, S
 export latex
 
+include("Term.jl")
+include("Terms.jl")
+include("Kamiltonian.jl")
+include("Generator.jl")
+include("latex.jl")
+
 
 function K(n::Int, k::Int = -1)
     if k != -1

@@ -13,21 +13,21 @@ mutable struct Term
     end
 end
 
+"""
+compute {{self, term}}/factor
+
+Parameters
+----------
+term : Term
+    DESCRIPTION.
+factor : Sym, optional
+    DESCRIPTION. The default is Sym(1).
+
+Returns
+-------
+Terms
+"""
 function bracket(self::Term, term::Term, factor::Sym = Sym(1))
-    """
-    compute {{self, term}}/factor
-
-    Parameters
-    ----------
-    term : Term
-        DESCRIPTION.
-    factor : Sym, optional
-        DESCRIPTION. The default is Sym(1).
-
-    Returns
-    -------
-    Terms
-    """
     term_r = Term(1)
     term_r.term1 = self
     term_r.term2 = term
@@ -170,6 +170,19 @@ function is_same(self::Term, term::Term)
     end
 
     return 0
+end
+
+# Add these method definitions before the existing is_same method
+function is_same(::Nothing, ::Nothing)
+    return 1  # Both are nothing, so they're the same
+end
+
+function is_same(::Term, ::Nothing)
+    return 0  # Term and nothing are different
+end
+
+function is_same(::Nothing, ::Term)
+    return 0  # Nothing and term are different
 end
 
 function combine_if_same(self::Term, term::Term)

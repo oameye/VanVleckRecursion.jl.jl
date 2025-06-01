@@ -70,3 +70,7 @@ function latex(self::Terms)
     end
     return s
 end
+
+function _latex(::Nothing, freq_id::Int = 1; freq::Sym = symbols(""), freqs::Vector{Sym} = Sym[])
+    return "", freq_id, freqs
+end

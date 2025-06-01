@@ -10,9 +10,17 @@ SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
 [compat]
 SymPy = "2"
 julia = "1.10"
+Aqua = "0.8.11"
+JET = "0.9.18, 0.10"
+ExplicitImports = "1.11"
+Test = "1.10"
+LaTeXStrings = "1.4"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+ExplicitImports = "7d51a73a-1435-4ff3-83d9-f097790105c7"
+JET = "c3a54625-cd67-489e-a8e7-0a5a0ff4e31b"
 
 [targets]
-test = ["Test"]
+test = ["Test", "Aqua", "ExplicitImports", "JET"]
