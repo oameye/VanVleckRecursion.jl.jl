@@ -154,7 +154,7 @@ class Term(object): #where the "subroutine" is defined
             denom *= freq
         sign = self.factor > 0
 
-        if len((-denom).expr_free_symbols) < len(denom.expr_free_symbols):
+        if len((-denom).free_symbols) < len(denom.free_symbols):
             # if denom has a negative sign, move it to the overall sign
             sign = not sign
             denom *= -1
@@ -166,7 +166,7 @@ class Term(object): #where the "subroutine" is defined
         sall += s+"}{"
         if q!=1: sall += str(q)
         sall += str(denom).replace("**","^").replace("*","")\
-            +"(i\omega)^%d}"%len(freqs)
+            +"(i\\omega)^%d}"%len(freqs)
         if self.rotating == 1:
             sall+="e^{im_1\\omega t}"
         return sall
