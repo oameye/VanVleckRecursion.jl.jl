@@ -3,6 +3,7 @@ $(DocStringExtensions.README)
 """
 module VanVleckRecursion
 
+using DocStringExtensions
 using Printf, LaTeXStrings
 
 # Export main types
