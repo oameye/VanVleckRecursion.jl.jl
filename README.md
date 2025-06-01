@@ -1,8 +1,8 @@
 # VanVleckRecursion.jl
 
-[![docs](https://img.shields.io/badge/docs-online-blue.svg)](https://oameye.github.io/KeldyshContraction.jl/)
-[![codecov](https://codecov.io/gh/oameye/KeldyshContraction.jl/branch/main/graph/badge.svg)](https://app.codecov.io/gh/oameye/KeldyshContraction.jl)
-[![Benchmarks](https://github.com/oameye/KeldyshContraction.jl/actions/workflows/Benchmarks.yaml/badge.svg?branch=main)](https://oameye.github.io/KeldyshContraction.jl/benchmarks/)
+[![docs](https://img.shields.io/badge/docs-online-blue.svg)](https://oameye.github.io/VanVleckRecursion.jl/)
+[![codecov](https://codecov.io/gh/oameye/VanVleckRecursion.jl/branch/main/graph/badge.svg)](https://app.codecov.io/gh/oameye/VanVleckRecursion.jl)
+[![Benchmarks](https://github.com/oameye/VanVleckRecursion.jl/actions/workflows/Benchmarks.yaml/badge.svg?branch=main)](https://oameye.github.io/VanVleckRecursion.jl/benchmarks/)
 
 [![Code Style: Blue](https://img.shields.io/badge/blue%20style%20-%20blue-4495d1.svg)](https://github.com/JuliaDiff/BlueStyle)
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
