@@ -1,26 +1,17 @@
 name = "VanVleckRecursion"
-uuid = "22e1a417-f97c-4d4c-9c66-07ada5491978"
-authors = ["oameye"]
+uuid = "b035d78d-16e8-4eee-b57b-0bcdd92a70b5"
+authors = ["oameye <oameye@example.com>"]
 version = "0.1.0"
 
 [deps]
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
-SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [compat]
-SymPy = "2"
 julia = "1.10"
-Aqua = "0.8.11"
-JET = "0.9.18, 0.10"
-ExplicitImports = "1.11"
-Test = "1.10"
-LaTeXStrings = "1.4"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
-ExplicitImports = "7d51a73a-1435-4ff3-83d9-f097790105c7"
-JET = "c3a54625-cd67-489e-a8e7-0a5a0ff4e31b"
 
 [targets]
-test = ["Test", "Aqua", "ExplicitImports", "JET"]
+test = ["Test"]

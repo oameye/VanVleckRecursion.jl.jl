@@ -1,34 +1,60 @@
+"""
+# VanVleckRecursion.jl
+
+A Julia package for quantum harmonic balance calculations using Van Vleck recursion.
+
+This package implements the Van Vleck transformation for quantum systems,
+providing tools for computing generators and Kamiltonians in the rotating wave approximation.
+
+## Main Features
+
+- Term and Terms types for representing quantum expressions
+- Bracket operations (Poisson brackets)
+- Time derivatives and integration
+- Rotation operations
+- Kamiltonian and Generator calculations
+- Caching for efficient repeated calculations
+
+## Example Usage
+
+```julia
+using VanVleckRecursion
+
+# Set up Hamiltonian
+H = Terms([Term(rotating=0), Term(rotating=1)])
+set_hamiltonian!(H)
+
+# Calculate generators
+s1 = S(1)  # First-order generator
+k1 = K(1)  # First-order Kamiltonian
+```
+
+Translated from Python code by xiaoxu (2021) into idiomatic Julia.
+"""
 module VanVleckRecursion
 
-using SymPy
-using Base: deepcopy
+using Printf
 
-export Term, Terms, Kamiltonian, Generator
-export bracket, dot, rot, integrate, simplify!
-export get_kamiltonian, get_generator, set_H!, K, S
-export latex
+# Export main types
+export AbstractTerm, AbstractTerms, Term, Terms, SymbolicNum
 
-include("Term.jl")
-include("Terms.jl")
-include("Kamiltonian.jl")
-include("Generator.jl")
-include("latex.jl")
+# Export main operations
+export bracket, dot, rot, integrate
+export is_same, combine_if_same, simplify, simplify!
+export latex, latex_simple, latex_advanced
 
+# Export Kamiltonian and Generator functions
+export K, S, kamiltonian_get, generator_get, set_hamiltonian!, clear_caches!
 
-function K(n::Int, k::Int = -1)
-    if k != -1
-        return get_kamiltonian(n, k)
-    end
-    Kn = Terms(Term[])
-    for ki in 0:(n+1)
-        Kn = Kn + get_kamiltonian(n, ki)
-    end
-    simplify!(Kn)
-    return Kn
-end
+# Export caches (for advanced users)
+export KAMILTONIAN_CACHE, GENERATOR_CACHE
 
-function S(n::Int)
-    return get_generator(n)
-end
+include("types.jl")
+include("operations.jl")
+include("comparison.jl")
+include("collections.jl")
+include("arithmetic.jl")
+include("display.jl")
+include("kamiltonian.jl")
 
-end # module
+end # module VanVleckRecursion
