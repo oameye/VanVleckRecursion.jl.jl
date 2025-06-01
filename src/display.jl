@@ -278,40 +278,6 @@ function latex(terms::Terms; advanced::Bool=true)
     return latexstring(s)
 end
 
-"""
-    latex_advanced(term::Term)
-    latex_advanced(terms::Terms)
-
-Generate sophisticated LaTeX with proper fractions and frequency handling.
-Convenience function equivalent to `latex(term, advanced=true)`.
-
-## Example
-```julia
-term = Term(rotating=1, factor=1//3)
-advanced_str = latex_advanced(term)
-```
-"""
-latex_advanced(term::Term) = latex(term, advanced=true)
-latex_advanced(terms::Terms) = latex(terms, advanced=true)
-
-"""
-    latex_simple(term::Term)
-    latex_simple(terms::Terms)
-
-Generate simple LaTeX for basic use and quick visualization.
-Convenience function equivalent to `latex(term, advanced=false)`.
-
-Basic format without complex fractions or frequency indexing.
-
-## Example
-```julia
-term = Term(rotating=1, factor=1//2)
-simple = latex_simple(term)  # "1/2*1e^{i\\omega t}"
-```
-"""
-latex_simple(term::Term) = latex(term, advanced=false)
-latex_simple(terms::Terms) = latex(terms, advanced=false)
-
 # Display methods for Van Vleck recursion terms and collections
 
 """
