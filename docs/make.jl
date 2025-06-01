@@ -32,9 +32,9 @@ makedocs(;
     format=Documenter.HTML(; canonical="https://oameye.github.io/VanVleckRecursion.jl"),
     pages=pages,
     clean=true,
-    linkcheck=false,
+    linkcheck=true,
     warnonly=:missing_docs,
-    draft=true,#,(!CI),
+    draft=false,#,(!CI),
     doctest=false,  # We test it in the CI, no need to run it here
     checkdocs=:exports,
 )

@@ -31,6 +31,7 @@ Tests for Kamiltonian and Generator calculations.
     end
 
     @testset "Caching Behavior" begin
+        using VanVleckRecursion: GENERATOR_CACHE
         # Clear cache to test
         clear_caches!()
 

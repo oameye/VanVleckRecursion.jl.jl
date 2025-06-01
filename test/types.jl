@@ -60,21 +60,21 @@ end
         term1 = Term(rotating=1, factor=2)
         term2 = Term(rotating=1, factor=3)
 
-        @test is_same(term1, term2) == 1
+        @test VanVleckRecursion.is_same(term1, term2) == 1
     end
 
     @testset "Different Terms" begin
         term1 = Term(rotating=0)
         term2 = Term(rotating=1)
 
-        @test is_same(term1, term2) == 0
+        @test VanVleckRecursion.is_same(term1, term2) == 0
     end
 
     @testset "Term Combination" begin
         term1 = Term(rotating=1, factor=2)
         term2 = Term(rotating=1, factor=3)
 
-        combined, was_combined = combine_if_same(term1, term2)
+        combined, was_combined = VanVleckRecursion.combine_if_same(term1, term2)
         @test was_combined == true
         @test combined.factor == 5
     end
@@ -85,7 +85,7 @@ end
         term3 = Term(rotating=0, factor=1)
 
         terms = Terms([term1, term2, term3])
-        simplified = simplify(terms)
+        simplified = VanVleckRecursion.simplify(terms)
 
         @test length(simplified.terms) == 2  # Two different types
 

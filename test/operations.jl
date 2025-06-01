@@ -3,6 +3,7 @@ Tests for quantum operations: brackets, time derivatives, rotation, and integrat
 """
 
 @testset "Bracket Operations" begin
+    using VanVleckRecursion: bracket
     @testset "Basic Bracket Operation" begin
         term1 = Term(rotating=0)
         term2 = Term(rotating=1)
@@ -36,6 +37,7 @@ Tests for quantum operations: brackets, time derivatives, rotation, and integrat
 end
 
 @testset "Time Derivative Operations" begin
+    using VanVleckRecursion: dot
     @testset "Dot Operation on Rotating Term" begin
         term = Term(rotating=1, factor=2)
         result = dot(term)
@@ -61,6 +63,7 @@ end
 end
 
 @testset "Rotation Operations" begin
+    using VanVleckRecursion: rot
     @testset "Rot Operation on Rotating Term" begin
         term = Term(rotating=1, factor=2)
         result = rot(term, 3 // 2)
@@ -86,6 +89,7 @@ end
 end
 
 @testset "Integration Operations" begin
+    using VanVleckRecursion: integrate
     @testset "Integration of Rotating Term" begin
         term = Term(rotating=1, factor=2)
         result = integrate(term, 3)
