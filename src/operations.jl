@@ -1,29 +1,17 @@
+# filepath: /home/oameye/Documents/vanVleck-recursion/src/operations.jl
 """
-Basic operations on individual terms: bracket, dot, rot, integrate.
+Core operations for Van Vleck canonical transformation.
 """
 
 """
     bracket(term1::Term, term2::Term, factor=1)
 
-Compute the Poisson bracket {{term1, term2}}/factor.
+Compute Poisson bracket {term1, term2} or commutator [term1, term2].
 
-This creates a new term representing the bracket operation between two terms.
-The result depends on the rotating properties of the input terms.
-
-# Arguments
-- `term1::Term`: First term in the bracket
-- `term2::Term`: Second term in the bracket
-- `factor`: Scaling factor (default 1)
-
-# Returns
-`Terms`: Collection containing the result of the bracket operation
-
-# Examples
-```julia
-term1 = Term(rotating=0)
-term2 = Term(rotating=1)
-result = bracket(term1, term2)
-```
+# Rules
+- {static, oscillating} → oscillating
+- {static, static} → static
+- {oscillating, oscillating} → static + oscillating
 """
 function bracket(term1::Term, term2::Term, factor=1)
     term_r = Term(;
@@ -51,17 +39,8 @@ end
 """
     dot(term::Term, factor=1)
 
-Apply the dot operation (time derivative) to a term.
-
-This operation represents taking the time derivative of a term.
-Static terms (rotating=0) yield empty results.
-
-# Arguments
-- `term::Term`: The term to differentiate
-- `factor`: Scaling factor (default 1)
-
-# Returns
-`Terms`: Collection containing the differentiated term
+Apply time derivative ∂/∂t. Oscillating terms get frequency factor,
+static terms vanish.
 """
 function dot(term::Term, factor=1)
     term.rotating == 0 && return Terms(Term[])
@@ -86,17 +65,7 @@ end
 """
     rot(term::Term, factor=1)
 
-Apply rotation operation to a term.
-
-This operation applies a rotation transformation with the given factor.
-Static terms yield empty results.
-
-# Arguments
-- `term::Term`: The term to rotate
-- `factor`: Rotation factor (default 1)
-
-# Returns
-`Terms`: Collection containing the rotated term
+Extract oscillating parts. Static terms → empty, oscillating terms → scaled.
 """
 function rot(term::Term, factor=1)
     term.rotating == 0 && return Terms(Term[])
@@ -110,20 +79,8 @@ end
 """
     integrate(term::Term, factor=1)
 
-Integrate a term with respect to time.
-
-This operation performs time integration on a term.
-Static terms cannot be integrated and will throw an error.
-
-# Arguments
-- `term::Term`: The term to integrate
-- `factor`: Scaling factor (default 1)
-
-# Returns
-`Terms`: Collection containing the integrated term
-
-# Throws
-`ErrorException`: If attempting to integrate a static term
+Time integration. Oscillating terms → frequency denominator,
+static terms → empty (no secular growth).
 """
 function integrate(term::Term, factor=1)
     if term.rotating == 0

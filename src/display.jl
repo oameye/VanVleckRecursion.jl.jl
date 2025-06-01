@@ -1,13 +1,30 @@
 """
-Display methods and LaTeX generation for terms and collections.
+Display methods and LaTeX generation for Van Vleck recursion terms.
+
+Provides LaTeX output formatting for terms and collections:
+- Frequency indexing with automatic m₁, m₂, ... symbols
+- Nested Poisson brackets {{H₁,H₂}}
+- Denominators with (iω)ⁿ powers
+- Rational coefficients and time dependence e^(imω t)
+
+Output follows Venkatraman et al. (2022) conventions.
 """
 
 # Frequency symbol management for LaTeX
+"""
+    FreqSymbol
+
+Frequency symbol for LaTeX generation with automatic indexing.
+Generates symbols like m₁, m₂, etc. for frequency expansion.
+
+Fields: `name::String`, `index::Int`
+"""
 struct FreqSymbol
     name::String
     index::Int
 end
 
+# Arithmetic operations for frequency symbols in LaTeX expressions
 Base.show(io::IO, fs::FreqSymbol) = print(io, fs.name)
 Base.string(fs::FreqSymbol) = fs.name
 Base.:*(fs::FreqSymbol, other) = "$(fs.name)*$(other)"
@@ -16,14 +33,31 @@ Base.:-(fs1::FreqSymbol, fs2::FreqSymbol) = "$(fs1.name) - $(fs2.name)"
 Base.:-(other, fs::FreqSymbol) = "$(other) - $(fs.name)"
 Base.:-(fs::FreqSymbol, other) = "$(fs.name) - $(other)"
 
-# Create frequency symbols like m_1, m_2, etc.
+"""
+    freq_symbol(i::Int) -> FreqSymbol
+
+Create frequency symbol with index i, formatted as "m_i".
+
+## Example
+```julia
+sym = freq_symbol(1)  # Creates "m_1"
+```
+"""
 freq_symbol(i::Int) = FreqSymbol("m_$i", i)
 
 """
-    format_frequency_denominator(freqs::Vector)
+    format_frequency_denominator(freqs::Vector) -> String
 
-Format frequency symbols into a proper denominator string with exponents.
-Groups identical frequencies and formats them as m_i^n.
+Format frequency symbols into denominator string with exponents.
+
+Groups identical frequencies and represents with exponents for
+LaTeX denominators (e.g., "m_1^2m_2").
+
+## Example
+```julia
+freqs = [freq_symbol(1), freq_symbol(1), freq_symbol(2)]
+denom = format_frequency_denominator(freqs)  # "m_1^2m_2"
+```
 """
 function format_frequency_denominator(freqs::Vector)
     if isempty(freqs)
@@ -53,18 +87,14 @@ function format_frequency_denominator(freqs::Vector)
 end
 
 """
-    _latex(term::Term, freq_id::Int=1, freq=nothing, freqs::Vector=[])
+    _latex(term::Term, freq_id::Int=1, freq=nothing, freqs::Vector=[]) -> Tuple{String, Int, Vector}
 
-Internal LaTeX generation with frequency indexing.
+Internal recursive LaTeX generation with frequency indexing.
 
-# Arguments
-- `term::Term`: The term to process
-- `freq_id::Int`: Current frequency index counter
-- `freq`: Current frequency symbol or value
-- `freqs::Vector`: Accumulated frequency symbols for denominator
+Core function for converting Van Vleck terms to LaTeX format. Handles nested
+Poisson brackets, frequency assignment, and denominator accumulation.
 
-# Returns
-`Tuple{String, Int, Vector}`: (latex_string, next_freq_id, updated_freqs)
+Returns: (latex_string, next_freq_id, updated_freqs)
 """
 function _latex(term::Term, freq_id::Int=1, freq=nothing, freqs::Vector=[])
     new_freqs = copy(freqs)
@@ -131,26 +161,22 @@ function _latex(term::Term, freq_id::Int=1, freq=nothing, freqs::Vector=[])
     return "\\{\\!\\!\\{$s1,$s2\\}\\!\\!\\}", freq_id, new_freqs
 end
 
-# Handle Nothing cases for _latex function
+# Handle Nothing cases for _latex function - ensures robustness in recursive traversal
 _latex(::Nothing, freq_id::Int, freq, freqs::Vector) = ("", freq_id, freqs)
 
 """
-    latex(term::Term; advanced::Bool=true)
+    latex(term::Term; advanced::Bool=true) -> String
 
-Generate LaTeX representation of a term.
+Generate LaTeX representation of Van Vleck recursion term.
 
-# Arguments
-- `term::Term`: The term to represent
-- `advanced::Bool`: If true, uses sophisticated LaTeX with fractions and frequency handling
+- `advanced=true`: Sophisticated LaTeX with fractions, frequency indexing, denominators
+- `advanced=false`: Simple coefficient*exponential format
 
-# Returns
-`String`: LaTeX string representation
-
-# Examples
+## Example
 ```julia
-term = Term(rotating=1, factor=2)
-advanced_latex = latex(term)  # Complex fraction notation (default)
-simple_latex = latex(term, advanced=false)  # "2*1e^{i\\omega t}"
+term = Term(rotating=1, factor=1//2)
+latex(term)  # "\\frac{1}{2}H_{m_1}e^{im_1\\omega t}"
+latex(term, advanced=false)  # "1/2*1e^{i\\omega t}"
 ```
 """
 function latex(term::Term; advanced::Bool=true)
@@ -226,16 +252,18 @@ function latex(term::Term; advanced::Bool=true)
 end
 
 """
-    latex(terms::Terms; advanced::Bool=true)
+    latex(terms::Terms; advanced::Bool=true) -> String
 
-Generate LaTeX representation of a collection of terms with proper alignment.
+Generate LaTeX representation of term collection with proper alignment.
 
-# Arguments
-- `terms::Terms`: The collection to represent
-- `advanced::Bool`: If true, uses sophisticated LaTeX formatting for individual terms
+Formats multiple terms (K⁽ⁿ⁾ or S⁽ⁿ⁾ expressions) with line breaks
+every 2 terms for readability.
 
-# Returns
-`String`: LaTeX string representation with line breaks and alignment
+## Example
+```julia
+k2_terms = K(2)
+k2_latex = latex(k2_terms)  # Multi-line LaTeX output
+```
 """
 function latex(terms::Terms; advanced::Bool=true)
     s = L""
@@ -254,12 +282,12 @@ end
     latex_advanced(term::Term)
     latex_advanced(terms::Terms)
 
-Generate sophisticated LaTeX representation with proper fractions and frequency handling.
-This is equivalent to calling `latex(term, advanced=true)`.
+Generate sophisticated LaTeX with proper fractions and frequency handling.
+Convenience function equivalent to `latex(term, advanced=true)`.
 
-# Examples
+## Example
 ```julia
-term = Term(rotating=1, factor=1//2)
+term = Term(rotating=1, factor=1//3)
 advanced_str = latex_advanced(term)
 ```
 """
@@ -270,36 +298,62 @@ latex_advanced(terms::Terms) = latex(terms, advanced=true)
     latex_simple(term::Term)
     latex_simple(terms::Terms)
 
-Generate simple LaTeX representation for basic use.
-This is equivalent to calling `latex(term, advanced=false)`.
+Generate simple LaTeX for basic use and quick visualization.
+Convenience function equivalent to `latex(term, advanced=false)`.
 
-# Examples
+Basic format without complex fractions or frequency indexing.
+
+## Example
 ```julia
-term = Term(rotating=1, factor=2)
-simple_str = latex_simple(term)  # "2*1e^{i\\omega t}"
+term = Term(rotating=1, factor=1//2)
+simple = latex_simple(term)  # "1/2*1e^{i\\omega t}"
 ```
 """
 latex_simple(term::Term) = latex(term, advanced=false)
 latex_simple(terms::Terms) = latex(terms, advanced=false)
 
-# Display methods
+# Display methods for Van Vleck recursion terms and collections
+
 """
     show(io::IO, term::Term)
 
-Display a term in a compact format.
+Display Van Vleck term in compact format for console output.
+Shows essential components: factor, footprint, and structure.
+
+Format: `factor*footprint`
+
+## Example
+```julia
+term = Term(rotating=1, factor=1//2)
+println(term)  # "1//2*1"
+```
 """
 Base.show(io::IO, term::Term) = print(io, "$(term.factor)*$(term.footprint)")
 
 """
     show(io::IO, terms::Terms)
 
-Display a collection of terms, one per line.
+Display collection of Van Vleck terms, one per line.
+Organized output for easy inspection of K⁽ⁿ⁾ or S⁽ⁿ⁾ expressions.
+
+## Example
+```julia
+k2_terms = K(2)
+println(k2_terms)  # Multi-line term display
+```
 """
 Base.show(io::IO, terms::Terms) = print(io, join(string.(terms.terms), "\n"))
 
 """
-    length(terms::Terms)
+    length(terms::Terms) -> Int
 
-Get the number of terms in a collection.
+Get number of terms in Van Vleck recursion collection.
+Useful for analyzing complexity of K⁽ⁿ⁾ expressions.
+
+## Example
+```julia
+k3_terms = K(3)
+length(k3_terms)  # Number grows with recursion order
+```
 """
 Base.length(terms::Terms) = length(terms.terms)

@@ -1,27 +1,33 @@
 """
-Functions for comparing and combining terms.
+Functions for comparing and combining Van Vleck recursion terms.
+
+Provides structural comparison and combination of terms for simplification.
+Handles anti-commutativity of Poisson brackets: {A,B} = -{B,A}.
+
+Key functions:
+- `is_same()`: Check structural equivalence with sign tracking
+- `combine_if_same()`: Merge terms with identical structure
 """
 
 """
-    is_same(term1::Term, term2::Term)
+    is_same(term1::Term, term2::Term) -> Int
 
-Check if two terms are structurally the same (returns similarity factor).
+Check if two terms are structurally equivalent.
 
-This function determines if two terms have the same structure and can be combined.
-Returns a numerical factor indicating the relationship between the terms.
+Returns similarity factor accounting for anti-commutativity:
+- `0`: Different structure (cannot combine)
+- `+1`: Identical structure (same sign)
+- `-1`: Equivalent but opposite sign ({A,B} = -{B,A})
 
 # Arguments
 - `term1::Term`: First term to compare
 - `term2::Term`: Second term to compare
 
-# Returns
-`Int`: Similarity factor (0 if different, ±1 if same, with sign indicating orientation)
-
-# Examples
+# Example
 ```julia
 term1 = Term(rotating=1, factor=2)
 term2 = Term(rotating=1, factor=3)
-is_same(term1, term2)  # Returns 1 (same structure)
+is_same(term1, term2)  # Returns 1 (combinable, same sign)
 ```
 """
 function is_same(term1::Term, term2::Term)
@@ -81,26 +87,26 @@ function is_same(term1::Term, term2::Term)
 end
 
 """
-    combine_if_same(term1::Term, term2::Term)
+    combine_if_same(term1::Term, term2::Term) -> Tuple{Term, Bool}
 
-Combine two terms if they are structurally the same.
+Combine two terms if they are structurally equivalent.
 
-Attempts to combine two terms by adding their factors if they have
-the same structure. Returns both the result and a boolean indicating success.
+Merges terms by adding coefficients when structure matches, handling sign
+relationship from anti-commutativity. Preserves exact rational arithmetic.
 
 # Arguments
 - `term1::Term`: First term to combine
 - `term2::Term`: Second term to combine
 
 # Returns
-`Tuple{Term, Bool}`: (combined_term, was_combined)
+- `Tuple{Term, Bool}`: (combined_term, was_combined)
 
-# Examples
+# Example
 ```julia
-term1 = Term(rotating=1, factor=2)
-term2 = Term(rotating=1, factor=3)
+term1 = Term(rotating=1, factor=1//2)
+term2 = Term(rotating=1, factor=1//3)
 combined, success = combine_if_same(term1, term2)
-# combined.factor == 5, success == true
+# combined.factor == 5//6, success == true
 ```
 """
 function combine_if_same(term1::Term, term2::Term)
@@ -112,7 +118,8 @@ function combine_if_same(term1::Term, term2::Term)
     return combined, true
 end
 
-# Handle Nothing cases
-is_same(::Nothing, ::Nothing) = 1
-is_same(::Term, ::Nothing) = 0
-is_same(::Nothing, ::Term) = 0
+# Handle Nothing cases for robust recursive comparison
+# These ensure the recursive algorithm handles missing terms gracefully
+is_same(::Nothing, ::Nothing) = 1     # Two missing terms are equivalent
+is_same(::Term, ::Nothing) = 0        # Term vs missing: not equivalent
+is_same(::Nothing, ::Term) = 0        # Missing vs term: not equivalent

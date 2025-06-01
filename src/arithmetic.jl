@@ -1,32 +1,50 @@
 """
-Arithmetic operations for Term and Terms objects.
+Arithmetic operations for Van Vleck recursion Term and Terms objects.
+
+Implements arithmetic operations preserving mathematical structure and exact rational arithmetic:
+- Addition: Term collection concatenation (K⁽ⁿ⁾ + K⁽ᵐ⁾)
+- Scalar multiplication: Scaling by rational/integer factors
+- Structure preservation: Maintains rotating/static properties and nested structure
+
+Compatible with Van Vleck recursive structure and symbolic computation.
 """
 
 # Arithmetic operations for Terms collections
+
 """
-    +(terms1::Terms, terms2::Terms)
+    +(terms1::Terms, terms2::Terms) -> Terms
 
-Add two Terms collections by concatenating their terms.
+Add two Van Vleck term collections by concatenating terms.
 
-# Examples
+Combines collections preserving all individual terms. Essential for
+building complete K⁽ⁿ⁾ = Σₖ K⁽ⁿ,ₖ⁾ expressions.
+
+## Example
 ```julia
-terms1 = Terms([Term(rotating=0)])
-terms2 = Terms([Term(rotating=1)])
-combined = terms1 + terms2  # Contains both terms
+k10_terms = K(1, 0)  # Static contribution
+k11_terms = K(1, 1)  # Rotating contribution
+k1_total = k10_terms + k11_terms  # Complete K⁽¹⁾
 ```
+
+Terms concatenated without simplification.
 """
 Base.:+(terms1::Terms, terms2::Terms) = Terms(vcat(terms1.terms, terms2.terms))
 
-# Multiplication for Term objects
+# Scalar multiplication for individual Terms
+
 """
-    *(term::Term, factor)
+    *(term::Term, factor) -> Term
 
-Scale a term by multiplying its factor.
+Scale Van Vleck term by multiplying coefficient factor.
 
-# Examples
+Preserves all term properties (rotating, nested structure, frequency dependencies)
+while scaling the coefficient. Used for applying recursive coefficients and
+normalization factors.
+
+## Example
 ```julia
-term = Term(rotating=1, factor=2)
-scaled = term * 3  # New term with factor=6
+term = Term(rotating=1, factor=1//2)
+scaled = term * 3  # factor becomes 3//2
 ```
 """
 function Base.:*(term::Term, factor)
@@ -42,22 +60,34 @@ function Base.:*(term::Term, factor)
 end
 
 """
-    *(factor, term::Term)
+    *(factor, term::Term) -> Term
 
-Scale a term by multiplying its factor (commutative).
+Scale Van Vleck term by coefficient factor (commutative form).
+
+Equivalent to `term * factor` with reversed argument order.
+
+## Example
+```julia
+term = Term(rotating=1, factor=2)
+scaled = 3 * term  # factor becomes 6
+```
 """
 Base.:*(factor, term::Term) = term * factor
 
-# Multiplication for Terms objects
+# Scalar multiplication for Terms collections
+
 """
-    *(terms::Terms, factor)
+    *(terms::Terms, factor) -> Terms
 
-Scale all terms in a collection by multiplying their factors.
+Scale all terms in Van Vleck collection by multiplying their factors.
 
-# Examples
+Applies scalar to every term coefficient, preserving structure.
+Used for series normalization and perturbation scaling.
+
+## Example
 ```julia
-terms = Terms([Term(rotating=1, factor=2)])
-scaled = terms * 3  # All terms scaled by 3
+k2_terms = K(2)
+normalized = k2_terms * (1//factorial(2))  # Apply 1/2!
 ```
 """
 function Base.:*(terms::Terms, factor)
@@ -75,8 +105,16 @@ function Base.:*(terms::Terms, factor)
 end
 
 """
-    *(factor, terms::Terms)
+    *(factor, terms::Terms) -> Terms
 
-Scale all terms in a collection by multiplying their factors (commutative).
+Scale all terms in Van Vleck collection (commutative form).
+
+Equivalent to `terms * factor` with reversed argument order.
+
+## Example
+```julia
+terms = K(2)
+scaled = 3 * terms  # All factors multiplied by 3
+```
 """
 Base.:*(factor, terms::Terms) = terms * factor

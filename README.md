@@ -153,6 +153,39 @@ latex_collection = latex(terms)  # Multi-line LaTeX
 
 This implementation follows the Van Vleck recursion for canonical transformations in quantum mechanics. The transformation eliminates time-dependent terms through successive canonical transformations, resulting in an effective time-independent Hamiltonian suitable for rotating wave approximation.
 
+### The Secular Problem
+Traditional time-dependent perturbation theory for driven systems H(t) = H₀ + H₁cos(ωt) often produces secular terms that grow linearly in time, invalidating the approximation for long times. The Van Vleck method systematically eliminates these secular divergences.
+
+### Recursive Formulas
+The method constructs an effective Hamiltonian H_eff = Σₙₖ K(n,k) through recursive formulas:
+
+**Kamiltonians K(n,k):** (effective Hamiltonian contributions)
+- K(0,0) = H₀ (base Hamiltonian)  
+- K(0,1) = Ṡ(1) (time derivative of first generator)
+- K(n,1) = Ṡ(n+1) + {S(n), H₀} for n≠0
+- K(n,k) = (1/k) Σₘ {S(n-m), K(m,k-1)} for 1 < k ≤ n+1
+
+**Generators S(n):** (canonical transformation functions)
+- S(n) = ∫ rot([oscillating terms]) dt
+- Systematically eliminate time-dependent parts
+
+### Physical Applications
+- **Quantum Control**: Design effective Hamiltonians for quantum gates
+- **Floquet Engineering**: Create artificial gauge fields and topological phases
+- **AC Stark Shifts**: Light-matter interactions in oscillating fields  
+- **Ion Traps**: Eliminate micromotion effects
+- **Driven Many-Body Systems**: Effective theories for complex quantum systems
+
+The recursive formula implemented in this package is described in:
+
+**"On the static effective Hamiltonian of a rapidly driven nonlinear system"**  
+Jayameenakshi Venkatraman, Xu Xiao, Rodrigo G. Cortiñas, Alec Eickbusch, Michel H. Devoret  
+*Physical Review Letters* 129, 100601 (2022)  
+arXiv:2108.02861 [quant-ph]  
+DOI: [10.1103/PhysRevLett.129.100601](https://doi.org/10.1103/PhysRevLett.129.100601)
+
+The method provides a recursive formula for computing the static effective Hamiltonian of systems under fast-oscillating drives. The analytical result is well-suited to symbolic calculations and can be implemented to arbitrary order, overcoming limitations of existing time-dependent perturbation methods. By construction, the method applies directly to both quantum and classical systems.
+
 ## Translation from Python
 
 This package is a complete Julia translation of the original Python implementation by xiaoxu (2021). Key improvements include:
@@ -185,6 +218,19 @@ This package follows standard Julia package development practices. To contribute
 
 If you use this package in research, please cite:
 
-[Add appropriate citation information]
+```bibtex
+@article{venkatraman2022static,
+  title={On the static effective Hamiltonian of a rapidly driven nonlinear system},
+  author={Venkatraman, Jayameenakshi and Xiao, Xu and Corti{\~n}as, Rodrigo G and Eickbusch, Alec and Devoret, Michel H},
+  journal={Physical Review Letters},
+  volume={129},
+  number={10},
+  pages={100601},
+  year={2022},
+  publisher={American Physical Society},
+  doi={10.1103/PhysRevLett.129.100601},
+  url={https://arxiv.org/abs/2108.02861}
+}
+```
 
 Based on the original Python implementation by xiaoxu (2021), translated to Julia with significant enhancements for performance and usability.

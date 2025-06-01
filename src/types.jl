@@ -1,36 +1,26 @@
+# filepath: /home/oameye/Documents/vanVleck-recursion/src/types.jl
 """
-Type definitions for Van Vleck recursion calculations.
+Core data structures for Van Vleck recursion calculations.
 """
 
-# For this implementation, we use simple numeric types instead of symbolic ones
 const SymbolicNum = Union{Int,Float64,Rational{Int64}}
 
-# Abstract type hierarchy
 abstract type AbstractTerm end
 abstract type AbstractTerms end
 
 """
     Term
 
-Represents a single term in the quantum harmonic balance calculation.
+Single term in Van Vleck expansion. Either fundamental Hamiltonian (H₀, H₁)
+or result of bracket operations {{·,·}}.
 
 # Fields
-- `rotating::Int`: Rotation flag (0 for static, 1 for rotating)
+- `rotating::Int`: 0=static (H₀), 1=oscillating (H₁e^{iωt})
 - `factor::SymbolicNum`: Numerical coefficient
-- `freq_denom::Int`: Frequency denominator for integration/differentiation
-- `term1::Union{Term, Nothing}`: First term in bracket operation
-- `term2::Union{Term, Nothing}`: Second term in bracket operation
-- `footprint::String`: String representation of the term structure
-- `term_count::Int`: Number of operations in the term's history
-
-# Examples
-```julia
-# Create a rotating term with factor 2
-term = Term(rotating=1, factor=2)
-
-# Create a static term
-static_term = Term(rotating=0, factor=1//2)
-```
+- `freq_denom::Int`: Frequency powers from time integration
+- `term1, term2`: Sub-terms for {{term1, term2}} brackets
+- `footprint::String`: Unique identifier
+- `term_count::Int`: Complexity measure
 """
 @kwdef mutable struct Term <: AbstractTerm
     rotating::Int              = 1
@@ -45,32 +35,18 @@ end
 """
     Terms
 
-A collection of Term objects with operations for quantum harmonic balance.
-
-# Fields
-- `terms::Vector{Term}`: Vector containing individual terms
-
-# Examples
-```julia
-# Create from individual terms
-term1 = Term(rotating=0)
-term2 = Term(rotating=1)
-terms = Terms([term1, term2])
-
-# Create empty collection
-empty_terms = Terms()
-```
+Collection of Term objects representing complete expressions like K⁽ⁿ⁾ or S⁽ⁿ⁾.
+Supports algebraic operations and simplification.
 """
 struct Terms <: AbstractTerms
     terms::Vector{Term}
 
     function Terms(terms::Vector{T}) where {T}
-        # Filter out nothing values
         filtered_terms = filter(!isnothing, terms)
         new(filtered_terms)
     end
 end
 
-# Constructor overloads for convenience
+# Convenience constructors
 Terms() = Terms(Term[])
 Terms(term::Term) = Terms([term])

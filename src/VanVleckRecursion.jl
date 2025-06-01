@@ -1,35 +1,24 @@
 """
-# VanVleckRecursion.jl
+    VanVleckRecursion.jl
 
-A Julia package for quantum harmonic balance calculations using Van Vleck recursion.
+Van Vleck canonical transformation for rapidly driven quantum systems.
 
-This package implements the Van Vleck transformation for quantum systems,
-providing tools for computing generators and Kamiltonians in the rotating wave approximation.
+Implements recursive formulas from Venkatraman et al. (2022) arXiv:2108.02861
+to compute static effective Hamiltonians H_eff from time-periodic H(t).
 
-## Main Features
+# Key Functions
+- `set_hamiltonian!(H0, H_dict)`: Define H(t) = H₀ + Σₘ Hₘ e^{imωt}
+- `K(n, k=nothing)`: Compute K⁽ⁿ,ₖ⁾ or K⁽ⁿ⁾ (nested commutators)
+- `S(n)`: Compute generator S⁽ⁿ⁾ (anti-Hermitian)
+- `clear_caches!()`: Reset memoization
 
-- Term and Terms types for representing quantum expressions
-- Bracket operations (Poisson brackets)
-- Time derivatives and integration
-- Rotation operations
-- Kamiltonian and Generator calculations
-- Caching for efficient repeated calculations
-
-## Example Usage
-
+# Example
 ```julia
-using VanVleckRecursion
-
-# Set up Hamiltonian
-H = Terms([Term(rotating=0), Term(rotating=1)])
-set_hamiltonian!(H)
-
-# Calculate generators
-s1 = S(1)  # First-order generator
-k1 = K(1)  # First-order Kamiltonian
+H0 = [1 0; 0 -1]  # σz
+H_drive = Dict(1 => [0 1; 1 0])  # σx at frequency ω
+set_hamiltonian!(H0, H_drive)
+H_eff = integrate(K(0) + K(2))  # 2nd order effective Hamiltonian
 ```
-
-Translated from Python code by xiaoxu (2021) into idiomatic Julia.
 """
 module VanVleckRecursion
 

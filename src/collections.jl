@@ -1,23 +1,38 @@
 """
-Operations on Terms collections and simplification functions.
+Operations on Van Vleck recursion term collections and simplification functions.
+
+Extends core operations to collections, enabling bulk processing of K⁽ⁿ⁾ and S⁽ⁿ⁾ expressions.
+Provides simplification to manage exponential term growth in higher-order recursions.
+
+Key operations:
+- `bracket()`: Distribute Poisson brackets over collections
+- `dot()`: Apply time derivatives to all terms
+- `rot()`: Extract oscillating components
+- `integrate()`: Time-average for secular elimination
+- `simplify()`: Combine like terms and eliminate zeros
 """
 
 # Operations on Terms collections
+
 """
-    bracket(terms1::Terms, terms2::Terms, factor=1)
+    bracket(terms1::Terms, terms2::Terms, factor=1) -> Terms
 
-Compute Poisson brackets between all pairs of terms.
+Compute Poisson brackets between all pairs of terms from two collections.
 
-This function computes the bracket operation between every term in the first
-collection and every term in the second collection.
+Implements distributive property: {A + B, C + D} = {A,C} + {A,D} + {B,C} + {B,D}.
+Essential for building K⁽ⁿ,ₖ⁾ expressions from lower-order terms.
 
 # Arguments
-- `terms1::Terms`: First collection of terms
-- `terms2::Terms`: Second collection of terms
-- `factor`: Scaling factor (default 1)
+- `terms1::Terms`: First collection
+- `terms2::Terms`: Second collection
+- `factor`: Global scaling factor (default 1)
 
-# Returns
-`Terms`: Collection containing all bracket results
+# Example
+```julia
+k0_terms = K(0)
+k1_terms = K(1)
+k21_terms = bracket(k0_terms, k1_terms)  # All pairwise brackets
+```
 """
 function bracket(terms1::Terms, terms2::Terms, factor=1)
     new_terms = Term[]
@@ -31,16 +46,22 @@ function bracket(terms1::Terms, terms2::Terms, factor=1)
 end
 
 """
-    dot(terms::Terms, factor=1)
+    dot(terms::Terms, factor=1) -> Terms
 
-Apply dot operation to all terms.
+Apply time differentiation to all terms in a collection.
+
+Computes ∂/∂t with frequency-dependent scaling: ∂/∂t H_m e^{imωt} = (imω) H_m e^{imωt}.
+Used for generator construction and secular elimination.
 
 # Arguments
-- `terms::Terms`: Collection of terms to differentiate
-- `factor`: Scaling factor (default 1)
+- `terms::Terms`: Collection to differentiate
+- `factor`: Global scaling factor (default 1)
 
-# Returns
-`Terms`: Collection containing all differentiated terms
+# Example
+```julia
+k1_terms = K(1)
+k1_dot = dot(k1_terms)  # Time derivatives of all terms
+```
 """
 function dot(terms::Terms, factor=1)
     new_terms = Term[]
@@ -52,16 +73,22 @@ function dot(terms::Terms, factor=1)
 end
 
 """
-    rot(terms::Terms, factor=1)
+    rot(terms::Terms, factor=1) -> Terms
 
-Apply rotation operation to all terms.
+Extract oscillating (rotating) components from all terms.
+
+Separates time-dependent parts H_rot(t) = Σₘ≠₀ H_m e^{imωt} from static components.
+Static terms (rotating=0) are filtered out.
 
 # Arguments
-- `terms::Terms`: Collection of terms to rotate
-- `factor`: Rotation factor (default 1)
+- `terms::Terms`: Collection to process
+- `factor`: Rotation scaling factor (default 1)
 
-# Returns
-`Terms`: Collection containing all rotated terms
+# Example
+```julia
+k1_terms = K(1)
+k1_rotating = rot(k1_terms)  # Only oscillating parts
+```
 """
 function rot(terms::Terms, factor=1)
     new_terms = Term[]
@@ -73,16 +100,22 @@ function rot(terms::Terms, factor=1)
 end
 
 """
-    integrate(terms::Terms, factor=1)
+    integrate(terms::Terms, factor=1) -> Terms
 
-Integrate all terms.
+Perform time integration on all terms for secular elimination.
+
+Applies ∫₀^T dt to eliminate oscillating terms: ∫₀^T H_m e^{imωt} dt = 0 for m≠0.
+Only secular (time-averaged) terms survive.
 
 # Arguments
-- `terms::Terms`: Collection of terms to integrate
-- `factor`: Scaling factor (default 1)
+- `terms::Terms`: Collection to integrate
+- `factor`: Global scaling factor (default 1)
 
-# Returns
-`Terms`: Collection containing all integrated terms
+# Example
+```julia
+k1_terms = K(1)
+k1_secular = integrate(k1_terms)  # Only static parts survive
+```
 """
 function integrate(terms::Terms, factor=1)
     new_terms = Term[]
@@ -94,23 +127,23 @@ function integrate(terms::Terms, factor=1)
 end
 
 """
-    simplify!(terms::Terms)
+    simplify!(terms::Terms) -> Terms
 
-Simplify terms by combining like terms (modifies in place).
+Simplify collection by combining like terms and removing zeros (in-place).
 
-This function combines terms with the same structure by adding their factors.
-Terms with zero factors are removed. The operation modifies the input collection.
+Combines terms with identical structure, removes zero coefficients.
+Essential for managing exponential growth in higher-order recursions.
 
 # Arguments
 - `terms::Terms`: Collection to simplify (modified in place)
 
 # Returns
-`Terms`: The same collection (for chaining)
+Same collection reference for method chaining
 
-# Examples
+# Example
 ```julia
-terms = Terms([Term(rotating=1, factor=2), Term(rotating=1, factor=3)])
-simplify!(terms)  # Now contains one term with factor=5
+k2_terms = K(2)
+simplify!(k2_terms)  # Reduces from hundreds to dozens of terms
 ```
 """
 function simplify!(terms::Terms)
@@ -143,17 +176,24 @@ function simplify!(terms::Terms)
 end
 
 """
-    simplify(terms::Terms)
+    simplify(terms::Terms) -> Terms
 
-Return a simplified copy of terms.
+Return simplified copy without modifying original.
 
-This function creates a new simplified collection without modifying the input.
+Functional version of `simplify!()` that preserves the original collection.
+Preferred for immutability, debugging, and thread safety.
 
 # Arguments
-- `terms::Terms`: Collection to simplify
+- `terms::Terms`: Collection to simplify (unchanged)
 
 # Returns
-`Terms`: New simplified collection
+New simplified collection
+
+# Example
+```julia
+original = K(2)
+simplified = simplify(original)  # original unchanged
+```
 """
 function simplify(terms::Terms)
     new_terms = deepcopy(terms)
