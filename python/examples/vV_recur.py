@@ -365,12 +365,13 @@ class Terms(object):
         return len(self.terms)
 
     def latex(self):
-        s = "&"
+        # s = "&"
+        s = ""
         count = 0
         for ti in self.terms:
             count += 1
             s+= ti.latex()
-            if count%2 == 0: s+="\\\\ \n&"
+            if count%2 == 0: s+="\\\\ \n"#s+="\\\\ \n&"
         return s
 
     def __mul__(self, other):
@@ -475,11 +476,3 @@ def S(n):
 
 
 
-Kamiltonian.set_H(Terms([Term(0),Term(1)]))
-# print(K(1,2))
-# k = K(5,3).terms[-1]
-# k = K(3).terms[2]
-k = S(3).terms[1]
-k = S(2)
-print(k)
-print(k.latex())
