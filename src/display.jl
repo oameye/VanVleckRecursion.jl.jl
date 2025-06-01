@@ -31,7 +31,7 @@ function format_frequency_denominator(freqs::Vector)
     end
 
     # Count occurrences of each frequency
-    freq_counts = Dict{String, Int}()
+    freq_counts = Dict{String,Int}()
     for f in freqs
         if f != 0 && f !== nothing
             freq_str = string(f)
@@ -72,8 +72,8 @@ function _latex(term::Term, freq_id::Int=1, freq=nothing, freqs::Vector=[])
     if term.freq_denom != 0
         # Add frequency term to denominator and possibly increase freq index
         push!(new_freqs, freq)
-        if isa(freq, FreqSymbol) && (term.term1 === nothing ||
-                                     term.term1.rotating * term.term2.rotating != 0)
+        if isa(freq, FreqSymbol) &&
+            (term.term1 === nothing || term.term1.rotating * term.term2.rotating != 0)
             # Denominator is a symbol, and no static element in bracket
             freq_id += 1
         end
@@ -242,7 +242,7 @@ function latex(terms::Terms; advanced::Bool=true)
     count = 0
     for term in terms.terms
         count += 1
-        s *= latex(term, advanced=advanced)
+        s *= latex(term; advanced=advanced)
         if count % 2 == 0
             s *= "\\\\ \n"
         end

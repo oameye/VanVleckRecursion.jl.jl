@@ -121,7 +121,7 @@ function simplify!(terms::Terms)
         i in marked_for_removal && continue
 
         new_term = term_i
-        for (j, term_j) in enumerate(terms.terms[i+1:end])
+        for (j, term_j) in enumerate(terms.terms[(i + 1):end])
             actual_j = i + j
             actual_j in marked_for_removal && continue
 

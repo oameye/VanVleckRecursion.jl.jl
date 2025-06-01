@@ -3,7 +3,7 @@ Type definitions for Van Vleck recursion calculations.
 """
 
 # For this implementation, we use simple numeric types instead of symbolic ones
-const SymbolicNum = Union{Int, Float64, Rational{Int64}}
+const SymbolicNum = Union{Int,Float64,Rational{Int64}}
 
 # Abstract type hierarchy
 abstract type AbstractTerm end
@@ -33,13 +33,13 @@ static_term = Term(rotating=0, factor=1//2)
 ```
 """
 @kwdef mutable struct Term <: AbstractTerm
-    rotating::Int = 1
-    factor::SymbolicNum = 1
-    freq_denom::Int = 0
-    term1::Union{Term, Nothing} = nothing
-    term2::Union{Term, Nothing} = nothing
-    footprint::String = string(rotating)
-    term_count::Int = 1
+    rotating::Int              = 1
+    factor::SymbolicNum        = 1
+    freq_denom::Int            = 0
+    term1::Union{Term,Nothing} = nothing
+    term2::Union{Term,Nothing} = nothing
+    footprint::String          = string(rotating)
+    term_count::Int            = 1
 end
 
 """
@@ -64,7 +64,7 @@ empty_terms = Terms()
 struct Terms <: AbstractTerms
     terms::Vector{Term}
 
-    function Terms(terms::Vector{T}) where T
+    function Terms(terms::Vector{T}) where {T}
         # Filter out nothing values
         filtered_terms = filter(!isnothing, terms)
         new(filtered_terms)

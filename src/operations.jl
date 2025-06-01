@@ -26,13 +26,13 @@ result = bracket(term1, term2)
 ```
 """
 function bracket(term1::Term, term2::Term, factor=1)
-    term_r = Term(
-        rotating = 1,
-        term1 = term1,
-        term2 = term2,
-        factor = factor * term1.factor * term2.factor,
-        footprint = "[$(term1.footprint),$(term2.footprint)]",
-        term_count = term1.term_count + term2.term_count
+    term_r = Term(;
+        rotating=1,
+        term1=term1,
+        term2=term2,
+        factor=factor * term1.factor * term2.factor,
+        footprint="[$(term1.footprint),$(term2.footprint)]",
+        term_count=(term1.term_count + term2.term_count),
     )
 
     term_s = deepcopy(term_r)
@@ -72,7 +72,7 @@ function dot(term::Term, factor=1)
 
     if new_term.freq_denom == 0
         # Cancels out the frequency prefactor from the integration
-        new_term.footprint = new_term.footprint[1:end-2]
+        new_term.footprint = new_term.footprint[1:(end - 2)]
     else
         # Add the frequency denominator to the footprint
         # Generally this shouldn't happen
@@ -138,7 +138,7 @@ function integrate(term::Term, factor=1)
         # Cancels out the frequency prefactor from the integration
         # Generally this shouldn't happen
         @warn "Unexpected integration over a dot term directly"
-        new_term.footprint = new_term.footprint[1:end-3]
+        new_term.footprint = new_term.footprint[1:(end - 3)]
     else
         # Add the frequency denominator to the footprint
         new_term.footprint *= "/$(new_term.freq_denom)"

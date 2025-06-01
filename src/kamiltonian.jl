@@ -3,7 +3,7 @@ Kamiltonian and Generator calculations with caching.
 """
 
 # Kamiltonian implementation using a global cache
-const KAMILTONIAN_CACHE = Dict{Tuple{Int,Int}, Terms}()
+const KAMILTONIAN_CACHE = Dict{Tuple{Int,Int},Terms}()
 
 """
     kamiltonian_get(n::Int, k::Int)
@@ -44,7 +44,7 @@ function kamiltonian_get(n::Int, k::Int)
         KAMILTONIAN_CACHE[key] = term1 + term2
     elseif 1 < k <= n + 1
         terms = Terms()
-        for m in 0:n-1
+        for m in 0:(n - 1)
             terms = terms + bracket(generator_get(n - m), kamiltonian_get(m, k - 1), 1//k)
         end
         KAMILTONIAN_CACHE[key] = terms
@@ -57,7 +57,7 @@ function kamiltonian_get(n::Int, k::Int)
 end
 
 # Generator implementation using a global cache
-const GENERATOR_CACHE = Dict{Int, Terms}()
+const GENERATOR_CACHE = Dict{Int,Terms}()
 
 """
     generator_get(n::Int)
@@ -134,7 +134,7 @@ function K(n::Int, k::Int=-1)
     end
 
     kn = Terms()
-    for ki in 0:n+1
+    for ki in 0:(n + 1)
         kn = kn + kamiltonian_get(n, ki)
     end
     simplify!(kn)

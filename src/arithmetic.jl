@@ -29,7 +29,17 @@ term = Term(rotating=1, factor=2)
 scaled = term * 3  # New term with factor=6
 ```
 """
-Base.:*(term::Term, factor) = Term(term.rotating, term.factor * factor, term.freq_denom, term.term1, term.term2, term.footprint, term.term_count)
+function Base.:*(term::Term, factor)
+    Term(
+        term.rotating,
+        term.factor * factor,
+        term.freq_denom,
+        term.term1,
+        term.term2,
+        term.footprint,
+        term.term_count,
+    )
+end
 
 """
     *(factor, term::Term)
@@ -50,7 +60,19 @@ terms = Terms([Term(rotating=1, factor=2)])
 scaled = terms * 3  # All terms scaled by 3
 ```
 """
-Base.:*(terms::Terms, factor) = Terms([Term(t.rotating, t.factor * factor, t.freq_denom, t.term1, t.term2, t.footprint, t.term_count) for t in terms.terms])
+function Base.:*(terms::Terms, factor)
+    Terms([
+        Term(
+            t.rotating,
+            t.factor * factor,
+            t.freq_denom,
+            t.term1,
+            t.term2,
+            t.footprint,
+            t.term_count,
+        ) for t in terms.terms
+    ])
+end
 
 """
     *(factor, terms::Terms)
