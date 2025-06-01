@@ -94,7 +94,7 @@ S(n) = ∫ rot([-{S(n-1), K(0,0)} - Σₖ₌₂ⁿ K(n-1,k)]) dt  (for n > 1)
 ### Bracket Operation: {A, B}
 Represents Poisson brackets (classical) or commutators (quantum):
 - **Classical**: `{A, B} = ∂A/∂q ∂B/∂p - ∂A/∂p ∂B/∂q`
-- **Quantum**: `[A, B] = AB - BA` (in units where ℏ=1)
+- **Quantum**: `[A, B] = A \cdot B - B \cdot A` (in units where ℏ=1)
 
 **Rotation Rules:**
 - `{static, oscillating} → oscillating`

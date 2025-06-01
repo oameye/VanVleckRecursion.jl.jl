@@ -56,11 +56,11 @@ class Term(object): #where the "subroutine" is defined
         new_term.freq_denom -= 1
 
         if new_term.freq_denom == 0:
-            #cancles out the frequency prefactor from the integration
+            #cancels out the frequency prefactor from the integration
             new_term.footprint = new_term.footprint[:-2]
         else:
             #add the frequency denominator to the footprint
-            #generally this shouldnt happend
+            #generally this shouldnt happen
             raise Warning("Unexpected derivative over an unintegrated term")
             new_term.footprint += "/"+str(new_term.freq_denom)
         return Terms([new_term])
@@ -79,7 +79,7 @@ class Term(object): #where the "subroutine" is defined
         new_term.factor = new_term.factor*factor
         new_term.freq_denom += 1
         if new_term.freq_denom == 0:
-            #cancles out the frequency prefactor from the integration
+            #cancels out the frequency prefactor from the integration
             #generally this shouldn't happen
             raise Warning("Unexpected integration over a dot term directly")
             new_term.footprint = new_term.footprint[:-3]
