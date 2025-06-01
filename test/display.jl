@@ -13,7 +13,7 @@ Tests for LaTeX generation and display functionality.
 
     @testset "Terms Collection LaTeX" begin
         terms = Terms([Term(rotating=0), Term(rotating=1)])
-        latex_str =latex(terms; advanced=false) # Use simple format for this test
+        latex_str = latex(terms; advanced=false) # Use simple format for this test
         @test isa(latex_str, LaTeXString)
     end
 end

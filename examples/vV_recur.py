@@ -428,4 +428,5 @@ def S(n):
     return Generator.get(n)
 
 Kamiltonian.set_H(Terms([Term(0), Term(1), Term(2)]))
+print("K(1) = ", K(1))
 print(K(1).latex())
