@@ -226,52 +226,6 @@ class Term(object): #where the "subroutine" is defined
                     s2, freq_id, freqs = self.term2._latex(freq_id, smp.S(0),
                                                            freqs)
         return "\\{\\!\\!\\{"+s1+","+s2+"\\}\\!\\!\\}", freq_id, freqs
-        ftpt = self.footprint
-        if self.term1 == None:
-            if self.rotating == 0: return "H_0", freq_id, freqs
-            if self.freq_denom == 0: return "H_{"+str(freq)+"}", freq_id,freqs
-            if len(freqs) == 0 and self.freq_denom == 1: freqs.append(freq)
-            return "H_{"+str(freq)+"}", freq_id, freqs
-        if self.rotating == 0:
-            if len(freqs)!=0: freq_id += 1
-            if self.term1.freq_denom != 0:
-                freq1 = smp.Symbol("m_"+str(freq_id))
-                freqs.append(freq1)
-            else:
-                freq1 = -1*smp.Symbol("m_"+str(freq_id))
-                freqs.append(-1*freq1)
-            # freq_id += 1
-
-            s1, freq_id, freqs = self.term1._latex(freq_id, freq1, freqs)
-            s2, freq_id, freqs = self.term2._latex(freq_id, -1*freq1, freqs)
-
-        else:
-            if len(freqs) == 0 and self.freq_denom == 1:
-                freqs.append(freq)
-            if self.term1.rotating !=0 and self.term2.rotating !=0:
-                freq_id+=1
-            if self.term1.rotating * self.term2.rotating == 0 and \
-                self.freq_denom == 0:#ADD
-                    freq_id +=1#ADD
-
-            #Problem above. not always freq_id ++. sometimes denominator is (m1+m2).
-
-            if self.term1.freq_denom != 0:
-                freq1 = smp.Symbol("m_"+str(freq_id))
-                freqs.append(freq1)
-                # freq_id += 1
-                s1, freq_id, freqs = self.term1._latex(freq_id, freq1, freqs)
-                s2, freq_id, freqs = self.term2._latex(freq_id,
-                                                       freq-1*freq1, freqs)
-            else:
-                freq2 = smp.Symbol("m_"+str(freq_id))
-                freqs.append(freq2)
-                # freq_id += 1
-                s1, freq_id,freqs = self.term1._latex(freq_id,
-                                                      freq - 1*freq2, freqs)
-                s2, freq_id, freqs = self.term1._latex(freq_id, freq2,
-                                                           freqs)
-        return "\\{\\!\\!\\{"+s1+","+s2+"\\}\\!\\!\\}", freq_id, freqs
 
     def __str__(self):
         return str(self.factor)+"*"+self.footprint
