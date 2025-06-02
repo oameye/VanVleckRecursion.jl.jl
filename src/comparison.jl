@@ -24,10 +24,15 @@ Returns similarity factor accounting for anti-commutativity:
 - `term2::Term`: Second term to compare
 
 # Example
-```julia
+```jldoctest
+using VanVleckRecursion: is_same
 term1 = Term(rotating=1, factor=2)
 term2 = Term(rotating=1, factor=3)
-is_same(term1, term2)  # Returns 1 (combinable, same sign)
+is_same(term1, term2)  # Returns 1 (combinable; same sign)
+
+# output
+
+1
 ```
 """
 function is_same(term1::Term, term2::Term)
@@ -102,11 +107,14 @@ relationship from anti-commutativity. Preserves exact rational arithmetic.
 - `Tuple{Term, Bool}`: (combined_term, was_combined)
 
 # Example
-```julia
+```jldoctest
+using VanVleckRecursion: combine_if_same
 term1 = Term(rotating=1, factor=1//2)
 term2 = Term(rotating=1, factor=1//3)
 combined, success = combine_if_same(term1, term2)
-# combined.factor == 5//6, success == true
+
+# output
+(5//6*1, true)
 ```
 """
 function combine_if_same(term1::Term, term2::Term)

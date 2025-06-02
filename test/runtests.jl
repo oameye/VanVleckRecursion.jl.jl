@@ -38,3 +38,11 @@ include("arithmetic.jl")
 include("display.jl")
 include("kamiltonian.jl")
 include("van_Vleck_expansion.jl")
+
+@testset "Documentation" begin
+    using Documenter
+    DocMeta.setdocmeta!(
+        VanVleckRecursion, :DocTestSetup, :(using VanVleckRecursion); recursive=true
+    )
+    Documenter.doctest(VanVleckRecursion)
+end
