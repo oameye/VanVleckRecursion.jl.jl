@@ -25,6 +25,10 @@ else
 end
 # ^ when using LiveServer, this will generate a loop
 
+DocMeta.setdocmeta!(
+    VanVleckRecursion, :DocTestSetup, :(using VanVleckRecursion); recursive=true
+)
+
 makedocs(;
     sitename="VanVleckRecursion.jl",
     authors="Orjan Ameye",

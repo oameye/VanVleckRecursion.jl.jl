@@ -28,13 +28,21 @@ Essential for building K⁽ⁿ,ₖ⁾ expressions from lower-order terms.
 - `factor`: Global scaling factor (default 1)
 
 # Example
-```julia
+```jldoctest; output = false
+using VanVleckRecursion: bracket
+H = Terms([Term(rotating=0), Term(rotating=1)])
+set_hamiltonian!(H)
+
 k0_terms = K(0)
 k1_terms = K(1)
 k21_terms = bracket(k0_terms, k1_terms)  # All pairwise brackets
+
+# output
+
+-1//2*[0,[1/1,1]0]0
 ```
 """
-function bracket(terms1::Terms, terms2::Terms, factor=1)
+function bracket(terms1::Terms, terms2::Terms, factor::Number=1)
     new_terms = Term[]
     for t1 in terms1.terms
         for t2 in terms2.terms
@@ -58,12 +66,20 @@ Used for generator construction and secular elimination.
 - `factor`: Global scaling factor (default 1)
 
 # Example
-```julia
+```jldoctest; output = false
+using VanVleckRecursion: dot
+H = Terms([Term(rotating=0), Term(rotating=1)])
+set_hamiltonian!(H)
+
 k1_terms = K(1)
-k1_dot = dot(k1_terms)  # Time derivatives of all terms
+k1_dot = dot(k1_terms)  # Time derivatives of time-independent terms
+
+# output
+
+
 ```
 """
-function dot(terms::Terms, factor=1)
+function dot(terms::Terms, factor::Number=1)
     new_terms = Term[]
     for term in terms.terms
         result = dot(term, factor)
@@ -85,12 +101,20 @@ Static terms (rotating=0) are filtered out.
 - `factor`: Rotation scaling factor (default 1)
 
 # Example
-```julia
-k1_terms = K(1)
+```jldoctest; output = false
+using VanVleckRecursion: rot
+H = Terms([Term(rotating=0), Term(rotating=1)])
+set_hamiltonian!(H)
+
+k1_terms = K(1, 1)
 k1_rotating = rot(k1_terms)  # Only oscillating parts
+
+# output
+
+-1//2*[1/1,1]
 ```
 """
-function rot(terms::Terms, factor=1)
+function rot(terms::Terms, factor::Number=1)
     new_terms = Term[]
     for term in terms.terms
         result = rot(term, factor)
@@ -112,9 +136,17 @@ Only secular (time-averaged) terms survive.
 - `factor`: Global scaling factor (default 1)
 
 # Example
-```julia
-k1_terms = K(1)
-k1_secular = integrate(k1_terms)  # Only static parts survive
+```jldoctest; output = false
+using VanVleckRecursion: integrate, rot
+H = Terms([Term(rotating=0), Term(rotating=1)])
+set_hamiltonian!(H)
+
+k1_terms = K(1, 1)
+k1_rotating = rot(k1_terms)  # Only oscillating parts
+k1_secular = integrate(k1_rotating)  # Only static parts survive
+
+# output
+-1//2*[1/1,1]/1
 ```
 """
 function integrate(terms::Terms, factor=1)
@@ -139,12 +171,6 @@ Essential for managing exponential growth in higher-order recursions.
 
 # Returns
 Same collection reference for method chaining
-
-# Example
-```julia
-k2_terms = K(2)
-simplify!(k2_terms)  # Reduces from hundreds to dozens of terms
-```
 """
 function simplify!(terms::Terms)
     new_terms = Term[]
@@ -188,12 +214,6 @@ Preferred for immutability, debugging, and thread safety.
 
 # Returns
 New simplified collection
-
-# Example
-```julia
-original = K(2)
-simplified = simplify(original)  # original unchanged
-```
 """
 function simplify(terms::Terms)
     new_terms = deepcopy(terms)

@@ -17,13 +17,21 @@ Compatible with Van Vleck recursive structure and symbolic computation.
 Add two Van Vleck term collections by concatenating terms.
 
 Combines collections preserving all individual terms. Essential for
-building complete K⁽ⁿ⁾ = Σₖ K⁽ⁿ,ₖ⁾ expressions.
+building complete K⁽ⁿ⁾ = Σₖ Kₖ⁽ⁿ⁾ expressions.
 
 ## Example
-```julia
+```jldoctest; output = false
+H = Terms([Term(rotating=0), Term(rotating=1)])
+set_hamiltonian!(H)
+
 k10_terms = K(1, 0)  # Static contribution
 k11_terms = K(1, 1)  # Rotating contribution
 k1_total = k10_terms + k11_terms  # Complete K⁽¹⁾
+
+# output
+
+-1//2*[1/1,1]
+-1*[1/1,1]0
 ```
 
 Terms concatenated without simplification.
@@ -33,7 +41,8 @@ Base.:+(terms1::Terms, terms2::Terms) = Terms(vcat(terms1.terms, terms2.terms))
 # Scalar multiplication for individual Terms
 
 """
-    *(term::Term, factor) -> Term
+    *(term::Term, factor::Number) -> Term
+    *(factor::Number, term::Term) -> Term
 
 Scale Van Vleck term by multiplying coefficient factor.
 
@@ -42,12 +51,16 @@ while scaling the coefficient. Used for applying recursive coefficients and
 normalization factors.
 
 ## Example
-```julia
+```jldoctest; output = false
 term = Term(rotating=1, factor=1//2)
 scaled = term * 3  # factor becomes 3//2
+
+# output
+
+3//2*1
 ```
 """
-function Base.:*(term::Term, factor)
+function Base.:*(term::Term, factor::Number)
     Term(
         term.rotating,
         term.factor * factor,
@@ -58,39 +71,33 @@ function Base.:*(term::Term, factor)
         term.term_count,
     )
 end
-
-"""
-    *(factor, term::Term) -> Term
-
-Scale Van Vleck term by coefficient factor (commutative form).
-
-Equivalent to `term * factor` with reversed argument order.
-
-## Example
-```julia
-term = Term(rotating=1, factor=2)
-scaled = 3 * term  # factor becomes 6
-```
-"""
-Base.:*(factor, term::Term) = term * factor
+Base.:*(factor::Number, term::Term) = term * factor
 
 # Scalar multiplication for Terms collections
 
 """
-    *(terms::Terms, factor) -> Terms
+    *(terms::Terms, factor::Number) -> Terms
 
 Scale all terms in Van Vleck collection by multiplying their factors.
 
 Applies scalar to every term coefficient, preserving structure.
 Used for series normalization and perturbation scaling.
 
-## Example
-```julia
+## Example; output = false
+```jldoctest
+H = Terms([Term(rotating=0), Term(rotating=1)])
+set_hamiltonian!(H)
+
 k2_terms = K(2)
 normalized = k2_terms * (1//factorial(2))  # Apply 1/2!
+
+# output
+
+1//4*[[1/1,0]/1,1]0
+1//6*[[1/1,1]/1,1]0
 ```
 """
-function Base.:*(terms::Terms, factor)
+function Base.:*(terms::Terms, factor::Number)
     Terms([
         Term(
             t.rotating,
@@ -103,18 +110,4 @@ function Base.:*(terms::Terms, factor)
         ) for t in terms.terms
     ])
 end
-
-"""
-    *(factor, terms::Terms) -> Terms
-
-Scale all terms in Van Vleck collection (commutative form).
-
-Equivalent to `terms * factor` with reversed argument order.
-
-## Example
-```julia
-terms = K(2)
-scaled = 3 * terms  # All factors multiplied by 3
-```
-"""
 Base.:*(factor, terms::Terms) = terms * factor
