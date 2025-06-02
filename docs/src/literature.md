@@ -6,6 +6,5 @@
 
 3. **Van Vleck, J. H.** (1929). The correspondence principle in the statistical interpretation of quantum mechanics. *Proceedings of the National Academy of Sciences* **14**, 178-188.
   
-4. **Seibold K., Ameye, O., & Zilberberg, O.** (2023). Floquet Expansion by Counting Pump Photons. *Phys. Rev. Lett*. **134**, 060401. [arXiv:2404.09704](https://arxiv.org/abs/2404.09704)
+4. **Seibold K., Ameye, O., & Zilberberg, O.** (2024). Floquet Expansion by Counting Pump Photons. *Phys. Rev. Lett*. **134**, 060401. [arXiv:2404.09704](https://arxiv.org/abs/2404.09704)
 
- 
