@@ -248,7 +248,7 @@ function latex(term::Term; advanced::Bool=true)
         result *= "e^{im_1\\omega t}"
     end
 
-    return result
+    return latexstring(result)
 end
 
 """
