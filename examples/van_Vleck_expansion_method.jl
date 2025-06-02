@@ -36,10 +36,10 @@ set_hamiltonian!(H)
 
 K(1)
 
-# The output shows the first-order correction to the effective Hamiltonian. Here, we display the internal represenation of the correction, which includes the commutator terms and their coefficients. The internal represenation has three main components: coefficient, commutator structure, and the Floquet flag.
+# The output shows the first-order correction to the effective Hamiltonian. Here, we display the internal representation of the correction, which includes the commutator terms and their coefficients. The internal representation has three main components: coefficient, commutator structure, and the Floquet flag.
 #  - coefficient: `-1//2` the term has a coefficient of -1/2
 #  - commutator structure: `[1/1,1]` we have one commutator (Lie bracket) involving $H_{m_1}$ with itself but conjugate Floquet index `-m_1`. `/1` indicates that we have a Floquet index $m_1$ in the denominator.
-#  - Floquet flag: `0` indicates that this term doesn't oscilate.
+#  - Floquet flag: `0` indicates that this term doesn't oscillate.
 
 # We can also display the correction in LaTeX format for better readability:
 latex(K(1))
