@@ -186,7 +186,7 @@ function latex(term::Term; advanced::Bool=true)
         if term.rotating == 1
             s *= "e^{i\\omega t}"
         end
-        return latexstring(s)
+        return s
     end
 
     # Advanced LaTeX implementation with sophisticated formatting
@@ -248,7 +248,7 @@ function latex(term::Term; advanced::Bool=true)
         result *= "e^{im_1\\omega t}"
     end
 
-    return latexstring(result)
+    return result
 end
 
 """
@@ -266,7 +266,7 @@ k2_latex = latex(k2_terms)  # Multi-line LaTeX output
 ```
 """
 function latex(terms::Terms; advanced::Bool=true)
-    s = L""
+    s = ""
     count = 0
     for term in terms.terms
         count += 1
