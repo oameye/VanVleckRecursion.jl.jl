@@ -7,11 +7,11 @@ Tests for LaTeX generation and display functionality.
     @testset "Simple Term LaTeX" begin
         term = Term(rotating=1, factor=2)
         latex_str = latex(term; advanced=false)  # Use simple format for this test
-        @test isa(latex_str, LaTeXString)
+        @test isa(latex_str, String)
         @test occursin("2*1", latex_str)
 
         latex_str = latex(term; advanced=true)
-        @test isa(latex_str, LaTeXString)
+        @test isa(latex_str, String)
         @test occursin("H_{m_1}", latex_str)
     end
 
