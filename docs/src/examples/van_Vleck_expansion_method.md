@@ -16,8 +16,8 @@ H(t) = H₀ + H₁cos(ωt) + H₂cos(2ωt) + ... = H₀ + Σ_k H_k cos(kωt)
 ```
 
 Where:
-- $H₀$: Static (time-independent) part
-- $H₁cos(ωt)$: Primary oscillating drive at frequency ω
+- `H₀`: Static (time-independent) part
+- `H₁cos(ωt)`: Primary oscillating drive at frequency ω
 - Higher harmonics can also be included
 
 The goal is to find an effective time-independent Hamiltonian $H_\mathrm{eff}$ that captures the long-time dynamics of the system. To compute this, we will use the Van Vleck perturbation theory approachm, where the zeroth order Hamiltonian is $H₀$ and on compute higher order corrections by computing the commutators of the time-dependent Hamiltonian terms $H_k$ [see [Eckardt & Anisimovas (2015)](https://arxiv.org/abs/1502.06477)]. However, to know the which commutators to compute to which order, one needs to evaluate the recursive formulas described in [Venkatraman et al. (2022)](https://arxiv.org/abs/2108.02861). VanVleckRecursion.jl implements these recursive formulas to compute the n-th order commutator corrections.
