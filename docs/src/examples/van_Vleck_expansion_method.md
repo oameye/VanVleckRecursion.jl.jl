@@ -34,8 +34,8 @@ Define the Hamiltonian components
 
 ````@example van_Vleck_expansion_method
 H = Terms([
-    Term(rotating=0),    # H₀ (static part)
-    Term(rotating=1)     # H₁cos(ωt) (oscillating part)
+    Term(; rotating=0),    # H₀ (static part)
+    Term(; rotating=1),     # H₁cos(ωt) (oscillating part)
 ])
 
 set_hamiltonian!(H)
