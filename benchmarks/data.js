@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749397381529,
+  "lastUpdate": 1749397555377,
   "repoUrl": "https://github.com/oameye/VanVleckRecursion.jl",
   "entries": {
     "Benchmark Results": [
@@ -210,6 +210,36 @@ window.BENCHMARK_DATA = {
             "value": 1886779167,
             "unit": "ns",
             "extra": "gctime=12598204\nmemory=140334744\nallocs=1794987\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":50,\"overhead\":0,\"memory_tolerance\":0.01}"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "orjan.ameye@hotmail.com",
+            "name": "Orjan Ameye",
+            "username": "oameye"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cea0869e430d5e7afd87fbccb5b1e4169bd3802b",
+          "message": "fix: remove ambiguities (#16)",
+          "timestamp": "2025-06-08T17:43:28+02:00",
+          "tree_id": "1fb4ca8af85c3dc1ba027d637bd1f498ced2ff13",
+          "url": "https://github.com/oameye/VanVleckRecursion.jl/commit/cea0869e430d5e7afd87fbccb5b1e4169bd3802b"
+        },
+        "date": 1749397554280,
+        "tool": "julia",
+        "benches": [
+          {
+            "name": "van Vleck expansion/Fifth order",
+            "value": 1881600596,
+            "unit": "ns",
+            "extra": "gctime=11901980\nmemory=140334744\nallocs=1794987\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":50,\"overhead\":0,\"memory_tolerance\":0.01}"
           }
         ]
       }
