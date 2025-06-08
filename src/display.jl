@@ -275,7 +275,7 @@ function latex(terms::Terms; advanced::Bool=true)
             s *= "\\\\ \n"
         end
     end
-    return latexstring(s)
+    return LaTeXStrings.latexstring(s)
 end
 
 # Display methods for Van Vleck recursion terms and collections
@@ -323,3 +323,6 @@ length(k3_terms)  # Number grows with recursion order
 ```
 """
 Base.length(terms::Terms) = length(terms.terms)
+
+# const T_LATEX = Union{<:QField,Diagrams,Diagram,Edge}
+# Base.show(io::IO, ::MIME"text/latex", x::T_LATEX) = write(io, latexify(x))

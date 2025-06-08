@@ -3,8 +3,8 @@ $(DocStringExtensions.README)
 """
 module VanVleckRecursion
 
-using DocStringExtensions
-using Printf, LaTeXStrings
+using DocStringExtensions: DocStringExtensions
+using LaTeXStrings: LaTeXStrings
 
 # Export Kamiltonian and Generator functions
 export K, S, kamiltonian_get, generator_get, set_hamiltonian!, clear_caches!, latex
