@@ -27,6 +27,8 @@ end
 # Arithmetic operations for frequency symbols in LaTeX expressions
 Base.show(io::IO, fs::FreqSymbol) = print(io, fs.name)
 Base.string(fs::FreqSymbol) = fs.name
+Base.:*(fs1::FreqSymbol, fs2::FreqSymbol) = "$(fs1.name)*$(fs2.name)"
+Base.:*(fs::FreqSymbol, terms::Terms) = "$(fs.name)*$(terms)"
 Base.:*(fs::FreqSymbol, other) = "$(fs.name)*$(other)"
 Base.:*(other, fs::FreqSymbol) = "$(other)*$(fs.name)"
 Base.:-(fs1::FreqSymbol, fs2::FreqSymbol) = "$(fs1.name) - $(fs2.name)"

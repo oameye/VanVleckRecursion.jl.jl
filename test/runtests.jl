@@ -26,7 +26,7 @@ end
 @testset "best practices" begin
     using Aqua
 
-    Aqua.test_ambiguities([VanVleckRecursion]; broken=true)
+    Aqua.test_ambiguities([VanVleckRecursion]; broken=false)
     Aqua.test_all(VanVleckRecursion; ambiguities=false)
 end
 
