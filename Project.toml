@@ -6,7 +6,6 @@ version = "0.1.0"
 [deps]
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
-Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [compat]
 Aqua = "0.8.11"
@@ -16,7 +15,6 @@ DocStringExtensions = "0.9.4"
 ExplicitImports = "1.11"
 JET = "0.9.18, 0.10"
 LaTeXStrings = "1.4"
-Printf = "1.10"
 Test = "1.10"
 julia = "1.10"
 

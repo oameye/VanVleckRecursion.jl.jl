@@ -4,7 +4,6 @@ $(DocStringExtensions.README)
 module VanVleckRecursion
 
 using DocStringExtensions: DocStringExtensions
-using Printf: Printf
 using LaTeXStrings: LaTeXStrings
 
 # Export Kamiltonian and Generator functions
