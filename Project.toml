@@ -1,7 +1,7 @@
 name = "VanVleckRecursion"
 uuid = "b035d78d-16e8-4eee-b57b-0bcdd92a70b5"
 authors = ["Orjan Ameye <orjan.ameye@hotmail.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 DispatchDoctor = "8d63f2c5-f18a-4cf2-ba9d-b3f60fc568c8"
