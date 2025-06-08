@@ -44,7 +44,6 @@ end
     all_concrete(VVR.Terms)
 end
 
-
 # Include all test files
 include("types.jl")
 include("operations.jl")
