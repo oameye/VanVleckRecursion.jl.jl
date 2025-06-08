@@ -1,9 +1,3 @@
-"""
-Test suite for VanVleckRecursion.jl
-
-This test suite verifies the functionality of the Van Vleck recursion implementation.
-"""
-
 using Test
 using VanVleckRecursion
 
@@ -43,6 +37,10 @@ end
     all_concrete(VVR.Term)
     all_concrete(VVR.Terms)
 end
+
+using Preferences: set_preferences!
+
+set_preferences!("VanVleckRecursion", "dispatch_doctor_mode" => "error")
 
 # Include all test files
 include("types.jl")
