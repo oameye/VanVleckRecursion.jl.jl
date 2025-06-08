@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749397555377,
+  "lastUpdate": 1749397621685,
   "repoUrl": "https://github.com/oameye/VanVleckRecursion.jl",
   "entries": {
     "Benchmark Results": [
@@ -240,6 +240,36 @@ window.BENCHMARK_DATA = {
             "value": 1881600596,
             "unit": "ns",
             "extra": "gctime=11901980\nmemory=140334744\nallocs=1794987\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":50,\"overhead\":0,\"memory_tolerance\":0.01}"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "orjan.ameye@hotmail.com",
+            "name": "Orjan Ameye",
+            "username": "oameye"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b5a437401f4324de68e206416d417a78d7b4c3d5",
+          "message": "build: tag patch release (#18)",
+          "timestamp": "2025-06-08T17:44:40+02:00",
+          "tree_id": "686b2a549449ecd1803c98603612468bb4a7e631",
+          "url": "https://github.com/oameye/VanVleckRecursion.jl/commit/b5a437401f4324de68e206416d417a78d7b4c3d5"
+        },
+        "date": 1749397621343,
+        "tool": "julia",
+        "benches": [
+          {
+            "name": "van Vleck expansion/Fifth order",
+            "value": 1892522504,
+            "unit": "ns",
+            "extra": "gctime=12323047\nmemory=140334744\nallocs=1794987\nparams={\"gctrial\":true,\"time_tolerance\":0.05,\"evals_set\":false,\"samples\":10000,\"evals\":1,\"gcsample\":false,\"seconds\":50,\"overhead\":0,\"memory_tolerance\":0.01}"
           }
         ]
       }
