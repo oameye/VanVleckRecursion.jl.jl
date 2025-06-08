@@ -20,7 +20,7 @@ Key operations:
 Compute Poisson brackets between all pairs of terms from two collections.
 
 Implements distributive property: {A + B, C + D} = {A,C} + {A,D} + {B,C} + {B,D}.
-Essential for building K⁽ⁿ,ₖ⁾ expressions from lower-order terms.
+Essential for building K⁽ⁿ⁾,ₖ expressions from lower-order terms.
 
 # Arguments
 - `terms1::Terms`: First collection
